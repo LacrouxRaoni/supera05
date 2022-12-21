@@ -1,7 +1,17 @@
 package br.com.banco.model.entities;
 
+import br.com.banco.repositories.TransactionRepository;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Entity
 @Table(name = "transferencia")
@@ -61,4 +71,5 @@ public class Transaction {
     public Account getAccount() {
         return account;
     }
+
 }
