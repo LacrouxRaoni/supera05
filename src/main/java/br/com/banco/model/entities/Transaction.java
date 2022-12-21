@@ -33,7 +33,9 @@ public class Transaction {
     @Column(name = "nome_operador_transacao")
     private String operatorName;
 
+
     @ManyToOne()
+    @JoinColumn(name = "conta_id", referencedColumnName = "id_conta", nullable = false)
     private Account account;
 
     public Transaction() {

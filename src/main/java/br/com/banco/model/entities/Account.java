@@ -10,12 +10,13 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_conta")
     private Integer idAcc;
 
     @Column(name = "nome_responsavel")
     private String name;
 
-    @OneToMany(mappedBy = "conta_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private final static List<Transaction> transaction = new ArrayList<>();
 
     public Account() {
@@ -33,5 +34,7 @@ public class Account {
     public String getName() {
         return name;
     }
+
+
 
 }
