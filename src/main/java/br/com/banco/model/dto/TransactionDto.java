@@ -4,7 +4,6 @@ import com.sun.istack.NotNull;
 
 public class TransactionDto {
 
-    @NotNull
     private Integer accId;
 
     private String begin;
@@ -37,5 +36,21 @@ public class TransactionDto {
         this.begin = begin;
         this.end = end;
         this.operator = operator;
+    }
+
+    public Integer getAccId() {
+        return accId;
+    }
+
+    public String getBegin() {
+        return begin;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public String getOperator() {
+        return operator;
     }
 }
