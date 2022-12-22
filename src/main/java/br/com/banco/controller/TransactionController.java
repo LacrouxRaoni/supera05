@@ -17,11 +17,8 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/transaction")
 public class TransactionController {
-
     private final TransactionService transactionService;
-
     private String acc;
-
     @Autowired
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
@@ -36,13 +33,22 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
     @GetMapping("/date")
     public ResponseEntity getByDate(@RequestBody TransactionDto transactionDto){
         try{
             acc = transactionService.getByDate(transactionDto);
             return ResponseEntity.status(HttpStatus.OK).body(acc);
         } catch (TransactionException | ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/operator")
+    public ResponseEntity getOperator(@RequestBody TransactionDto transactionDto){
+        try{
+            acc = transactionService.getByOperator(transactionDto);
+            return ResponseEntity.status(HttpStatus.OK).body(acc);
+        } catch (TransactionException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

@@ -34,6 +34,7 @@ public class TransactionService {
         sb.append("\naccId= ");
         sb.append(account.get(0).get().getAccount().getIdAcc() + "\n");
         for (Optional<Transaction> c : account) {
+            sb.append("{\n");
             sb.append("date= ");
             sb.append(c.get().getTransferDate() + "\n");
             sb.append("type= ");
@@ -42,8 +43,8 @@ public class TransactionService {
             sb.append(c.get().getValue() + "\n");
             sb.append("operator= ");
             sb.append(c.get().getOperatorName() + "\n");
+            sb.append("}\n");
         }
-        sb.append("}\n");
         sb.append("}");
         return sb.toString();
     }
@@ -58,8 +59,9 @@ public class TransactionService {
     private String convertToStringByDate(List<Optional<Transaction>> account) {
             StringBuilder sb = new StringBuilder();
 
-            sb.append("{");
+            sb.append("{\n");
             for (Optional<Transaction> c : account) {
+                sb.append("{\n");
                 sb.append("date= ");
                 sb.append(c.get().getTransferDate() + "\n");
                 sb.append("type= ");
@@ -70,8 +72,8 @@ public class TransactionService {
                 sb.append(c.get().getOperatorName() + "\n");
                 sb.append("accId= ");
                 sb.append(c.get().getAccount().getIdAcc() + "\n");
+                sb.append("}\n");
             }
-            sb.append("}\n");
             sb.append("}");
             return sb.toString();
     }
@@ -81,5 +83,33 @@ public class TransactionService {
         Date date1 = sdf.parse(transactionDto.getBegin());
         Date date2 = sdf.parse(transactionDto.getEnd());
         return transactionRepository.findAllByTransferDateBetween(date1, date2);
+    }
+
+    public String getByOperator(TransactionDto transactionDto) {
+        List<Optional<Transaction>> account = transactionRepository.findAllByOperatorName(transactionDto.getOperator());
+        if (account.isEmpty())
+            throw new TransactionException("Invalid operator");
+        return convertToStringOperator(account);
+    }
+
+    private String convertToStringOperator(List<Optional<Transaction>> account) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("{\n");
+        sb.append(account.get(0).get().getOperatorName());
+        sb.append("\n{\n");
+        for (Optional<Transaction> c : account) {
+            sb.append("date= ");
+            sb.append(c.get().getTransferDate() + "\n");
+            sb.append("type= ");
+            sb.append(c.get().getTransactionType() + "\n");
+            sb.append("value= ");
+            sb.append(c.get().getValue() + "\n");
+            sb.append("accId= ");
+            sb.append(c.get().getAccount().getIdAcc() + "\n");
+        }
+        sb.append("}\n");
+        sb.append("}");
+        return sb.toString();
     }
 }
