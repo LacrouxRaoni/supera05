@@ -1,7 +1,5 @@
 package br.com.banco.model.dto;
 
-import com.sun.istack.NotNull;
-
 public class TransactionDto {
 
     private Integer accId;
@@ -20,8 +18,7 @@ public class TransactionDto {
         this.accId = accId;
     }
 
-    public TransactionDto(Integer accId, String begin, String end) {
-        this.accId = accId;
+    public TransactionDto(String begin, String end) {
         this.begin = begin;
         this.end = end;
     }
