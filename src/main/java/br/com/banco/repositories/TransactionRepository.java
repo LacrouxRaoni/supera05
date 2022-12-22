@@ -15,4 +15,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     List<Optional<Transaction>> findAllByTransferDateBetween(Date begin, Date end);
 
     List<Optional<Transaction>> findAllByOperatorName(String operator);
+
+    List<Optional<Transaction>> findAllByTransferDateBetweenAndOperatorName(Date begin, Date end, String operator);
 }

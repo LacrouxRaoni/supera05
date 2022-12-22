@@ -82,7 +82,9 @@ public class TransactionService {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date1 = sdf.parse(transactionDto.getBegin());
         Date date2 = sdf.parse(transactionDto.getEnd());
-        return transactionRepository.findAllByTransferDateBetween(date1, date2);
+        if (transactionDto.getOperator().isEmpty())
+            return transactionRepository.findAllByTransferDateBetween(date1, date2);
+        return transactionRepository.findAllByTransferDateBetweenAndOperatorName(date1, date2, transactionDto.getOperator());
     }
 
     public String getByOperator(TransactionDto transactionDto) {
@@ -111,5 +113,12 @@ public class TransactionService {
         sb.append("}\n");
         sb.append("}");
         return sb.toString();
+    }
+
+    public String getByAllReferences(TransactionDto transactionDto) throws ParseException {
+        List<Optional<Transaction>> account = convertStringToDate(transactionDto);
+        if (account.isEmpty())
+            throw new TransactionException("Invalid args");
+        return convertToStringOperator(account);
     }
 }

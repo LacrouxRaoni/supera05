@@ -52,4 +52,14 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @GetMapping("/all")
+    public ResponseEntity getByAll(@RequestBody TransactionDto transactionDto) throws ParseException {
+        try {
+            acc = transactionService.getByAllReferences(transactionDto);
+            return ResponseEntity.status(HttpStatus.OK).body(acc);
+        } catch (TransactionException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }
