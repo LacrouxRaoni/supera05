@@ -1,8 +1,6 @@
 package br.com.banco.controller;
 
 import br.com.banco.controller.exception.TransactionException;
-import br.com.banco.model.dto.TransactionDto;
-import br.com.banco.model.entities.Transaction;
 import br.com.banco.model.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,11 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin
 @RequestMapping("/transaction")
 public class TransactionController {
     private final TransactionService transactionService;
@@ -25,18 +21,20 @@ public class TransactionController {
     }
 
     @GetMapping("/accId")
-    public ResponseEntity getAllByAcc(@RequestBody TransactionDto transactionDto){
+    @ResponseBody
+    public ResponseEntity getAllByAcc(@RequestParam Integer param){
         try{
-            acc = transactionService.getAllService(transactionDto);
+            acc = transactionService.getAllService(param);
             return ResponseEntity.status(HttpStatus.OK).body(acc);
         } catch (TransactionException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
     @GetMapping("/date")
-    public ResponseEntity getByDate(@RequestBody TransactionDto transactionDto){
+    @ResponseBody
+    public ResponseEntity getByDate(@RequestParam String param1, String param2){
         try{
-            acc = transactionService.getByDate(transactionDto);
+            acc = transactionService.getByDate(param1, param2);
             return ResponseEntity.status(HttpStatus.OK).body(acc);
         } catch (TransactionException | ParseException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -44,9 +42,10 @@ public class TransactionController {
     }
 
     @GetMapping("/operator")
-    public ResponseEntity getOperator(@RequestBody TransactionDto transactionDto){
+    @ResponseBody
+    public ResponseEntity<String> getOperator(@RequestParam String param){
         try{
-            acc = transactionService.getByOperator(transactionDto);
+            acc = transactionService.getByOperator(param);
             return ResponseEntity.status(HttpStatus.OK).body(acc);
         } catch (TransactionException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -54,9 +53,10 @@ public class TransactionController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity getByAll(@RequestBody TransactionDto transactionDto) throws ParseException {
+    @ResponseBody
+    public ResponseEntity getByAll(@RequestParam String param1, String param2, String param3) throws ParseException {
         try {
-            acc = transactionService.getByAllReferences(transactionDto);
+            acc = transactionService.getByAllReferences(param1, param2, param3);
             return ResponseEntity.status(HttpStatus.OK).body(acc);
         } catch (TransactionException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
