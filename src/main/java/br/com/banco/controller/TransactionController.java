@@ -14,7 +14,7 @@ import java.text.ParseException;
 @RequestMapping("/transaction")
 public class TransactionController {
     private final TransactionService transactionService;
-    private String acc;
+    private String[] acc;
     @Autowired
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
@@ -43,13 +43,13 @@ public class TransactionController {
 
     @GetMapping("/operator")
     @ResponseBody
-    public ResponseEntity<String> getOperator(@RequestParam String param){
-        try{
+    public ResponseEntity<String[]> getOperator(@RequestParam String param){
+        //try{
             acc = transactionService.getByOperator(param);
             return ResponseEntity.status(HttpStatus.OK).body(acc);
-        } catch (TransactionException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        //} catch (TransactionException e) {
+         //   return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        //}
     }
 
     @GetMapping("/all")

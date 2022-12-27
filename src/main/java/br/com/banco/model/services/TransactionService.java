@@ -21,14 +21,14 @@ public class TransactionService {
     public TransactionService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
-    public String getAllService(Integer param) {
+    public String[] getAllService(Integer param) {
         List<Optional<Transaction>> account = transactionRepository.findAllByAccount_IdAcc(param);
         if (account.isEmpty())
             throw new TransactionException("Invalid accId");
         return convertToJson(account);
     }
 
-    public String getByDate(String begin, String end) throws ParseException {
+    public String[] getByDate(String begin, String end) throws ParseException {
         List<Optional<Transaction>> account = convertStringToDate(begin, end, "");
         if (account.isEmpty())
             throw new TransactionException("Invalid date value");
@@ -44,26 +44,29 @@ public class TransactionService {
         return transactionRepository.findAllByTransferDateBetweenAndOperatorName(date1, date2, operator);
     }
 
-    public String getByOperator(String operator) {
+    public String[] getByOperator(String operator) {
         List<Optional<Transaction>> account = transactionRepository.findAllByOperatorName(operator);
         if (account.isEmpty())
             throw new TransactionException("Invalid operator");
         return convertToJson(account);
     }
 
-    public String getByAllReferences(String param1, String param2, String operator) throws ParseException {
+    public String[] getByAllReferences(String param1, String param2, String operator) throws ParseException {
         List<Optional<Transaction>> account = convertStringToDate(param1, param2, operator);
         if (account.isEmpty())
             throw new TransactionException("Invalid args");
         return convertToJson(account);
     }
 
-    private String convertToJson(List<Optional<Transaction>> account) {
+    private String[] convertToJson(List<Optional<Transaction>> account) {
         ObjectMapper jsonObj = new ObjectMapper();
-        String jsonStr;
+        String []jsonStr = new String[account.size()];
 
         try {
-            jsonStr = jsonObj.writeValueAsString(account.get(0).get());
+            for (int i = 0; i < account.size(); i++){
+                jsonStr[i] = jsonObj.writeValueAsString(account.get(i).get());
+            }
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
